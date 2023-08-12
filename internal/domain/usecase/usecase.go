@@ -2,12 +2,6 @@ package usecase
 
 type (
 	UseCase interface {
-		CreateOrder()
+		CreateOrderRequest(body string, requestId string) error
 	}
-
-	useCase struct{}
 )
-
-func NewUseCase() UseCase {
-	return &useCase{}
-}

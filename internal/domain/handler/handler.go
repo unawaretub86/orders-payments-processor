@@ -4,26 +4,26 @@ import (
 	"context"
 	"fmt"
 
+	"orders-payments-processor/internal/domain/usecase"
+
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func handler(ctx context.Context, sqsEvent events.SQSEvent) error {
-	for _, message := range sqsEvent.Records {
-		fmt.Printf("Mensaje de SQS: %s\n", message.Body)
-	}
-	return nil
-}
+func HttpHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-func httpHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	requestID := fmt.Sprintf("%v", ctx.Value("aws_request_id"))
+
+	fmt.Println("ctx", ctx)
+	fmt.Println("request", request)
+
+	body := request.Body
+	fmt.Println("body", body)
+
 	response := events.APIGatewayProxyResponse{
-		StatusCode: 200,
+		StatusCode: 201,
 		Headers:    map[string]string{"Content-Type": "application/json"},
-		Body:       "{\"message\": \"Respuesta HTTP recibida\"}",
+		Body:       "{\"message\": \"Order Created \"}",
 	}
-	return response, nil
-}
 
-func main() {
-	lambda.Start(handler)
+	return response, usecase.CreateOrderRequest(body, requestID)
 }
