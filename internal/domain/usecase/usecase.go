@@ -2,6 +2,6 @@ package usecase
 
 type (
 	UseCase interface {
-		CreateOrderRequest(body string, requestId string) error
+		ConvertOrderRequest(body string, requestId string) error
 	}
 )

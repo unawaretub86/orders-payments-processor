@@ -1,9 +1,9 @@
 package main
 
 import (
-	"orders-payments-processor/internal/domain/handler"
-
 	"github.com/aws/aws-lambda-go/lambda"
+
+	"orders-payments-processor/internal/domain/handler"
 )
 
 func main() {

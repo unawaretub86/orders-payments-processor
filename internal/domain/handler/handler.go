@@ -2,28 +2,25 @@ package handler
 
 import (
 	"context"
-	"fmt"
-
-	"orders-payments-processor/internal/domain/usecase"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambdacontext"
+
+	"orders-payments-processor/internal/domain/usecase"
 )
 
 func HttpHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-	requestID := fmt.Sprintf("%v", ctx.Value("aws_request_id"))
+	lc, _ := lambdacontext.FromContext(ctx)
 
-	fmt.Println("ctx", ctx)
-	fmt.Println("request", request)
+	requestId := lc.AwsRequestID
 
 	body := request.Body
-	fmt.Println("body", body)
 
 	response := events.APIGatewayProxyResponse{
 		StatusCode: 201,
-		Headers:    map[string]string{"Content-Type": "application/json"},
-		Body:       "{\"message\": \"Order Created \"}",
+		Body:       "{\"message\": \"Order Created\"}",
 	}
 
-	return response, usecase.CreateOrderRequest(body, requestID)
+	return response, usecase.ConvertOrderRequest(body, requestId)
 }

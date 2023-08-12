@@ -1,2 +1,3 @@
 # orders-payments-processor
-order and payments processor in golang aws lambdas and dinamodb
+
+order http processor in golang aws lambdas 
