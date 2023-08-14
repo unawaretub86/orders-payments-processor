@@ -16,7 +16,7 @@ func ConvertOrderRequest(body, requestId string) error {
 	var orderRequest entities.OrderRequest
 	err := json.Unmarshal([]byte(body), &orderRequest)
 	if err != nil {
-		fmt.Println("Error unmarshaling API Gateway request:", err)
+		fmt.Println("Error marshaling API Gateway request:", err)
 		return err
 	}
 

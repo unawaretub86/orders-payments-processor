@@ -18,8 +18,8 @@ func HttpHandler(ctx context.Context, request events.APIGatewayProxyRequest) (ev
 	body := request.Body
 
 	response := events.APIGatewayProxyResponse{
-		StatusCode: 201,
-		Body:       "{\"message\": \"Order Created\"}",
+		StatusCode: 200,
+		Body:       "{\"message\": \"Order SQS sended\"}",
 	}
 
 	return response, usecase.ConvertOrderRequest(body, requestId)
