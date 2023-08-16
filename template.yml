@@ -1,30 +1,38 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
+
 Resources:
-  orderProcessor:
+  OrderProcessor:
     Type: 'AWS::Serverless::Function'
     Properties:
       CodeUri: cmd/api/main.go
       Handler: main
       Runtime: go1.x
-      Events:
-        MyApi:
-          Type: Api
-          Properties:
-            Path: /order-processor
-            Method: POST
 
-  orderSQS:
-    Type: 'AWS::SQS::Queue'
-
-  orderProcessor:
-    Type: 'AWS::Serverless::Function'
+  OrderApi:
+    Type: 'AWS::Serverless::Api'
     Properties:
-      CodeUri: cmd/api/main.go
-      Handler: main
-      Runtime: go1.x
-      Events:
-        MySqsEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt orderSQS.Arn
+      StageName: prod
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: Order Processor API
+        paths:
+          /order-processor:
+            x-amazon-apigateway-any-method:
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrderProcessor.Arn}/invocations
+              responses: {}
+              parameters: []
+              consumes: []
+              produces: []
+        x-amazon-apigateway-binary-media-types:
+          - '*/*'
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${OrderApi}.execute-api.${AWS::Region}.amazonaws.com/prod/order-processor"
