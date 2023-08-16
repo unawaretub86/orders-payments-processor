@@ -8,6 +8,9 @@ Resources:
       CodeUri: cmd/api/main.go
       Handler: main
       Runtime: go1.x
+      Policies:
+        - AmazonAPIGatewayInvokeFullAccess
+        - AmazonSQSFullAccess
 
   OrderApi:
     Type: 'AWS::Serverless::Api'
@@ -19,7 +22,7 @@ Resources:
           title: Order Processor API
         paths:
           /order-processor:
-            x-amazon-apigateway-any-method:
+            post:
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 httpMethod: POST

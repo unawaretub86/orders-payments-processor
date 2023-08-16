@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "orders-processor"
+stack_name = "OrderProcessor"
 resolve_s3 = true
-s3_prefix = "orders-processor"
+s3_prefix = "OrderProcessor"
 region = "us-east-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
