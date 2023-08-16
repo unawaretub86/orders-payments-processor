@@ -1,10 +1,10 @@
 package mocks
 
 import (
-	"orders-payments-processor/internal/domain/entities"
-
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
+
+	"orders-payments-processor/internal/domain/entities"
 )
 
 type Mocks struct {
