@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  orderProcessor:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: cmd/api/main.go
+      Handler: main
+      Runtime: go1.x
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /order-processor
+            Method: POST
+
+  orderSQS:
+    Type: 'AWS::SQS::Queue'
+
+  orderProcessor:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: cmd/api/main.go
+      Handler: main
+      Runtime: go1.x
+      Events:
+        MySqsEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt orderSQS.Arn
